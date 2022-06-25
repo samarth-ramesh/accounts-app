@@ -52,14 +52,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
         context: context,
         builder: (context) => EditTransaction(transaction: selected!));
     if (result != null) {
-      setState(() {
-        for (Transaction t in transactions) {
-          if (t.id == result.id) {
-            transactions[transactions.indexOf(t)] = result;
-            break;
-          }
-        }
-      });
+      getTrans();
     }
     setState(() {
       selected = null;
@@ -67,7 +60,15 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   void handleDelete() async {
-    showDialog(context: context, builder: (context) => DeleteTransaction(transaction: selected!));
+    final status = await showDialog(context: context, builder: (context) => DeleteTransaction(transaction: selected!));
+    if (status) {
+      getTrans();
+      setState((){selected = null;});
+    } else {
+      showDialog(context: context, builder: (context) {
+        return const ErrorDialog(message: 'Unable to delete',);
+      });
+    }
   }
 
   @override
