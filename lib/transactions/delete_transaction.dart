@@ -18,7 +18,10 @@ class DeleteTransaction extends StatelessWidget {
     return AlertDialog(
       title: Text(
         "Delete Transaction",
-        style: Theme.of(context).textTheme.headlineSmall,
+        style: Theme
+            .of(context)
+            .textTheme
+            .headlineSmall,
         textAlign: TextAlign.center,
       ),
       content: const Text(
@@ -26,9 +29,13 @@ class DeleteTransaction extends StatelessWidget {
         textAlign: TextAlign.justify,
       ),
       actions: [
-        ElevatedButton(onPressed: () {Navigator.of(context).pop(null);}, child: const Text("Cancel!")),
+        ElevatedButton(onPressed: () {
+          Navigator.of(context).pop(null);
+        }, child: const Text("Cancel!")),
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            doDelete(context);
+          },
           child: const Text("OK!"),
         ),
       ],
