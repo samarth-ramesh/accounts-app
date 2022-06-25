@@ -60,14 +60,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   void handleDelete() async {
-    final status = await showDialog(context: context, builder: (context) => DeleteTransaction(transaction: selected!));
+    final status = await showDialog(
+        context: context,
+        builder: (context) => DeleteTransaction(transaction: selected!));
     if (status) {
       getTrans();
-      setState((){selected = null;});
-    } else {
-      showDialog(context: context, builder: (context) {
-        return const ErrorDialog(message: 'Unable to delete',);
+      setState(() {
+        selected = null;
       });
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const ErrorDialog(
+              message: 'Unable to delete',
+            );
+          });
     }
   }
 
@@ -81,7 +89,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
             ? []
             : [
                 IconButton(onPressed: handleEdit, icon: const Icon(Icons.edit)),
-                IconButton(onPressed: handleDelete, icon: const Icon(Icons.delete)),
+                IconButton(
+                    onPressed: handleDelete, icon: const Icon(Icons.delete)),
               ]),
         leading: (selected != null)
             ? IconButton(
@@ -92,12 +101,28 @@ class _TransactionsPageState extends State<TransactionsPage> {
             : null,
       ),
       body: ListView(
-        children: List.from(transactions.map((e) => TransactionItem(
-              t: e,
-              setSelected: select,
-              selected: selected?.id == e.id,
-              key: Key(e.id.toString()),
-            ))),
+        children: List<Widget>.from(
+              transactions.map<Widget>(
+                (e) => TransactionItem(
+                  t: e,
+                  setSelected: select,
+                  selected: selected?.id == e.id,
+                  key: Key(e.id.toString()),
+                ),
+              ),
+            ) +
+            <Widget>[
+              transactions.isEmpty
+                  ? Padding(
+                    padding: const EdgeInsets.only(top: 32),
+                    child: Text(
+                        "No Transactions yet...\nCreate one now!",
+                        style: Theme.of(context).textTheme.headline5,
+                        textAlign: TextAlign.center,
+              ),
+                  )
+                  : const Text("")
+            ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: opf,
